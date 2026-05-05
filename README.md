@@ -19,3 +19,4 @@ Eine Windows-Desktopanwendung zur Abfrage von Zugverbindungen, entwickelt mit **
 | DB REST API | Echtzeit-Fahrplandaten |
 | HttpClient | API-Kommunikation |
 | MVVM-Pattern | Datenbindung via INotifyPropertyChanged |
+.
