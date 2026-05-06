@@ -9,10 +9,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using FahrplanAuskunft.Models;
+using FahrplanAuskunft.ViewModels;
 
-namespace FahrplanAuskunft
+namespace FahrplanAuskunft.Views  
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window  
     {
         private ObservableCollection<Verbindung> _alleVerbindungen = new();
         private DispatcherTimer _clockTimer = null!;
@@ -216,17 +218,20 @@ namespace FahrplanAuskunft
                     ? (dest.TryGetProperty("name", out var dn) ? dn.GetString() ?? nach : nach) : nach;
                 halte.Add(new Haltestelle
                 {
-                    Name = destName, Uhrzeit = arr.ToString("HH:mm"),
+                    Name = destName,
+                    Uhrzeit = arr.ToString("HH:mm"),
                     PunktFarbe = Color.FromRgb(46, 160, 67),
                     TextFarbe = new SolidColorBrush(Color.FromRgb(230, 237, 243))
                 });
 
                 result.Add(new Verbindung
                 {
-                    Von = von, Nach = nach,
+                    Von = von,
+                    Nach = nach,
                     Abfahrtszeit = dep.ToString("HH:mm"),
                     Ankunftszeit = arr.ToString("HH:mm"),
-                    Zugnummer = zugNr, ZugFarbeStr = zugFarbe,
+                    Zugnummer = zugNr,
+                    ZugFarbeStr = zugFarbe,
                     Umstiege = umstiege,
                     Dauer = $"{(int)dauer.TotalHours}h {dauer.Minutes}min",
                     Preis = preis,
@@ -316,14 +321,17 @@ namespace FahrplanAuskunft
                 var ankunft = aktuelleZeit.Add(TimeSpan.FromMinutes(dauerMin));
                 result.Add(new Verbindung
                 {
-                    Von = von, Nach = nach,
+                    Von = von,
+                    Nach = nach,
                     Abfahrtszeit = abfahrt.ToString(@"hh\:mm"),
                     Ankunftszeit = ankunft.ToString(@"hh\:mm"),
-                    Zugnummer = $"{typ} {nummer}", ZugFarbeStr = farbe,
+                    Zugnummer = $"{typ} {nummer}",
+                    ZugFarbeStr = farbe,
                     Umstiege = umstiege,
                     Dauer = $"{dauerMin / 60}h {dauerMin % 60}min",
                     Preis = basisPreis + rnd.NextDouble() * 10,
-                    PuenktlichkeitText = pText, PuenktlichkeitFarbe = pFarbe,
+                    PuenktlichkeitText = pText,
+                    PuenktlichkeitFarbe = pFarbe,
                     Haltestellen = GeneriereHaltestellen(von, nach, abfahrt, ankunft, umstiege, rnd)
                 });
                 aktuelleZeit = aktuelleZeit.Add(TimeSpan.FromMinutes(rnd.Next(20, 60)));
@@ -339,44 +347,32 @@ namespace FahrplanAuskunft
                 "Halle(Saale)", "Leipzig Hbf", "Bitterfeld", "Dessau Hbf" };
             var dauer = ankunft - abfahrt;
             var gewählt = zwischen.OrderBy(_ => rnd.Next()).Take(umstiege + 2).ToArray();
-            list.Add(new Haltestelle { Name = von, Uhrzeit = abfahrt.ToString(@"hh\:mm"),
-                PunktFarbe = Color.FromRgb(31, 111, 235), TextFarbe = new SolidColorBrush(Color.FromRgb(230, 237, 243)) });
+            list.Add(new Haltestelle
+            {
+                Name = von,
+                Uhrzeit = abfahrt.ToString(@"hh\:mm"),
+                PunktFarbe = Color.FromRgb(31, 111, 235),
+                TextFarbe = new SolidColorBrush(Color.FromRgb(230, 237, 243))
+            });
             for (int i = 0; i < gewählt.Length; i++)
             {
                 var z = abfahrt.Add(TimeSpan.FromMinutes(dauer.TotalMinutes * (i + 1.0) / (gewählt.Length + 1)));
-                list.Add(new Haltestelle { Name = gewählt[i], Uhrzeit = z.ToString(@"hh\:mm"),
-                    PunktFarbe = Color.FromRgb(48, 54, 61), TextFarbe = new SolidColorBrush(Color.FromRgb(139, 148, 158)) });
+                list.Add(new Haltestelle
+                {
+                    Name = gewählt[i],
+                    Uhrzeit = z.ToString(@"hh\:mm"),
+                    PunktFarbe = Color.FromRgb(48, 54, 61),
+                    TextFarbe = new SolidColorBrush(Color.FromRgb(139, 148, 158))
+                });
             }
-            list.Add(new Haltestelle { Name = nach, Uhrzeit = ankunft.ToString(@"hh\:mm"),
-                PunktFarbe = Color.FromRgb(46, 160, 67), TextFarbe = new SolidColorBrush(Color.FromRgb(230, 237, 243)) });
+            list.Add(new Haltestelle
+            {
+                Name = nach,
+                Uhrzeit = ankunft.ToString(@"hh\:mm"),
+                PunktFarbe = Color.FromRgb(46, 160, 67),
+                TextFarbe = new SolidColorBrush(Color.FromRgb(230, 237, 243))
+            });
             return list;
         }
-    }
-
-    public class Verbindung : INotifyPropertyChanged
-    {
-        public string Von { get; set; } = "";
-        public string Nach { get; set; } = "";
-        public string Abfahrtszeit { get; set; } = "";
-        public string Ankunftszeit { get; set; } = "";
-        public string Zugnummer { get; set; } = "";
-        public string ZugFarbeStr { get; set; } = "#1F6FEB";
-        public int Umstiege { get; set; }
-        public string Dauer { get; set; } = "";
-        public double Preis { get; set; }
-        public string PuenktlichkeitText { get; set; } = "";
-        public Color PuenktlichkeitFarbe { get; set; }
-        public List<Haltestelle> Haltestellen { get; set; } = new();
-        public string UmstiegeText => Umstiege == 0 ? "Direktverbindung" : Umstiege == 1 ? "1 Umstieg" : $"{Umstiege} Umstiege";
-        public Color ZugFarbe => (Color)ColorConverter.ConvertFromString(ZugFarbeStr);
-        public event PropertyChangedEventHandler? PropertyChanged;
-    }
-
-    public class Haltestelle
-    {
-        public string Name { get; set; } = "";
-        public string Uhrzeit { get; set; } = "";
-        public Color PunktFarbe { get; set; }
-        public SolidColorBrush TextFarbe { get; set; } = new(Colors.White);
     }
 }
