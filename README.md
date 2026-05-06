@@ -20,3 +20,10 @@ Eine Windows-Desktopanwendung zur Abfrage von Zugverbindungen, entwickelt mit **
 | HttpClient | API-Kommunikation |
 | MVVM-Pattern | Datenbindung via INotifyPropertyChanged |
 
+## Architektur
+Das Projekt folgt dem **MVVM-Pattern** (Model-View-ViewModel) mit einer klaren Trennung der Schichten:
+
+- **Models** – Datenmodelle (`Verbindung`, `Haltestelle`)
+- **Services** – API-Kommunikation und Business Logik (`DbApiService`)
+- **ViewModels** – Zustandsverwaltung und Präsentationslogik (`MainViewModel`)
+- **Views** – UI-Schicht (`MainWindow.xaml`)
