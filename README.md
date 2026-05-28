@@ -12,7 +12,7 @@ Eine Windows-Desktopanwendung zur Abfrage von Zugverbindungen, entwickelt mit **
 - Dark Mode UI
   
 ## UML Klassendiagramm
-<img width="684" height="691" alt="UML Klassen" src="https://github.com/user-attachments/assets/1164ad2c-bdfa-4737-8598-e95732c3c809" />
+<img width="619" height="833" alt="image" src="https://github.com/user-attachments/assets/c6458ca2-d364-4a24-b252-f6315ed8fdda" />
 
 ## Technologien
 | Technologie | Verwendung |
