@@ -10,6 +10,9 @@ Eine Windows-Desktopanwendung zur Abfrage von Zugverbindungen, entwickelt mit **
 - Verbindungsfilter nach Zugtyp und Umstiegen
 - Automatischer Fallback auf Demo-Daten bei fehlender Verbindung
 - Dark Mode UI
+  
+## UML Klassendiagramm
+<img width="684" height="691" alt="UML Klassen" src="https://github.com/user-attachments/assets/1164ad2c-bdfa-4737-8598-e95732c3c809" />
 
 ## Technologien
 | Technologie | Verwendung |
